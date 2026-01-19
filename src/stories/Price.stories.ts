@@ -17,7 +17,7 @@ const meta: Meta<typeof Price> = {
 export default meta;
 type Story = StoryObj<typeof Price>;
 
-export const NoDiscount: Story = {
+export const RegularPrice: Story = {
   args: {
     price: 9.99,
     discountedPrice: null,
@@ -26,11 +26,20 @@ export const NoDiscount: Story = {
   },
 };
 
-export const WithDiscount: Story = {
+export const Discounted: Story = {
   args: {
     price: 9.99,
     discountedPrice: 7.99,
     currency: "USD",
     locale: "en-US",
+  },
+};
+
+export const EuroLocale: Story = {
+  args: {
+    price: 9.99,
+    discountedPrice: 7.99,
+    currency: "EUR",
+    locale: "de-DE",
   },
 };

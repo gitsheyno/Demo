@@ -36,3 +36,17 @@ export const noRate: Story = {
     maxStars: 5,
   },
 };
+
+export const OverMax: Story = {
+  args: {
+    rating: 8,
+    maxStars: 5,
+  },
+};
+
+export const BelowMin: Story = {
+  args: {
+    rating: -1,
+    maxStars: 5,
+  },
+};

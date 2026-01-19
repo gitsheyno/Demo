@@ -1,33 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/vue3-vite";
+import type { Meta, StoryObj } from "@storybook/vue3";
 import ProductCard from "../components/ProductCard.vue";
-
-type Product = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  discountPercentage?: number;
-  rating: number;
-  stock: number;
-  tags: string[];
-  brand: string;
-  sku: string;
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  returnPolicy: string;
-  minimumOrderQuantity: number;
-  images: string[];
-  thumbnail?: string;
-  reviews?: Array<{
-    rating: number;
-    comment: string;
-    reviewerName: string;
-    reviewerEmail: string;
-    date: string;
-  }>;
-};
+import type { Product } from "../utilities/types";
 
 const baseProduct: Product = {
   id: 1,
@@ -79,9 +52,6 @@ const meta = {
     <div class="p-2 bg-slate-50">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <story />
-          <story />
-          <story />
-          
         </div>
       </div>
       `,
@@ -112,7 +82,7 @@ export const DiscountAtLeast5Percent: Story = {
     product: {
       ...baseProduct,
       stock: 20,
-      discountPercentage: 15, // >= 5 -> badge + discounted price should show
+      discountPercentage: 15,
     },
   },
 };
@@ -122,7 +92,7 @@ export const DiscountBelow5PercentHidden: Story = {
     product: {
       ...baseProduct,
       stock: 20,
-      discountPercentage: 4, // < 5 -> NO badge, NO discounted price
+      discountPercentage: 4,
     },
   },
 };
@@ -131,7 +101,7 @@ export const LimitedStock: Story = {
   args: {
     product: {
       ...baseProduct,
-      stock: 3, // <= 5 -> Limited badge should show
+      stock: 3,
       discountPercentage: 0,
     },
   },
@@ -141,8 +111,8 @@ export const OutOfStock: Story = {
   args: {
     product: {
       ...baseProduct,
-      stock: 0, // out badge should show, image grayscale/opacity
-      discountPercentage: 20, // should NOT show discount badge because stock === 0
+      stock: 0,
+      discountPercentage: 20,
     },
   },
 };
@@ -151,7 +121,8 @@ export const noImage: Story = {
   args: {
     product: {
       ...baseProduct,
-      images: [], // no images
+      images: [],
+      thumbnail: "",
     },
   },
 };

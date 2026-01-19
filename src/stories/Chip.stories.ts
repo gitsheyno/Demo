@@ -15,14 +15,14 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const ProductTags: Story = {
   args: {
     label: "Beauty",
     prefix: "#",
   },
 };
 
-export const withoutPrefix: Story = {
+export const WithoutPrefix: Story = {
   args: {
     label: "Electronics",
     prefix: "",

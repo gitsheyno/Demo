@@ -1,4 +1,10 @@
 <script setup lang="ts">
+/**
+ *
+ *
+ * ProductCard.vue
+ *
+ */
 import { computed } from "vue";
 import Badge from "./Badge.vue";
 import Price from "./Price.vue";
@@ -6,6 +12,7 @@ import TagChip from "./TagChip.vue";
 import Rating from "./Rating.vue";
 import Button from "./Button.vue";
 import type { Product } from "../utilities/types";
+import { DISCOUNT_THRESHOLD } from "../config/constants";
 
 interface Props {
   product: Product;
@@ -17,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const isOutOfStock = computed(() => props.product.stock === 0);
+
 const hasDiscount = computed(
   () => props.product.discountPercentage && props.product.discountPercentage > 0
 );
@@ -27,19 +35,16 @@ const discountedPrice = computed(() => {
   }
   return props.product.price;
 });
+const hasValidDiscount = computed(() => {
+  if (!props.product.discountPercentage) return false;
+  return props.product.discountPercentage >= DISCOUNT_THRESHOLD;
+});
 
 const imageUrl = computed(() => {
   return props.product.thumbnail || props.product.images[0] || "";
 });
 
 const reviewCount = computed(() => props.product.reviews?.length || 0);
-
-const DISCOUNT_THRESHOLD = 5;
-
-const hasValidDiscount = computed(() => {
-  if (!props.product.discountPercentage) return false;
-  return props.product.discountPercentage >= DISCOUNT_THRESHOLD;
-});
 </script>
 
 <template>
@@ -57,10 +62,10 @@ const hasValidDiscount = computed(() => {
       />
       <div
         v-else
-        class="w-full h-64 flex items-center justify-center bg-slate-200"
+        class="w-full h-full flex items-center justify-center bg-slate-200"
       >
         <svg
-          class="w-20 h-20 text-slate-400"
+          class="w-full h-full text-slate-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

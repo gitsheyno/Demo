@@ -1,14 +1,18 @@
 <script setup lang="ts">
+/**
+ *  ProductList.vue
+ *  This component displays a list of products fetched from an API.
+ *  It includes search functionality, pagination controls, and handles loading and error states.
+ */
+
 import { computed, onMounted, ref, watch } from "vue";
 import ProductCard from "../components/ProductCard.vue";
 import SearchHeader from "../components/SearchHeader.vue";
 import Skleton from "../components/Skleton.vue";
 import PaginationControls from "../components/Pagination.vue";
+import { getProductByQuery, getProducts } from "../services";
 import type { Product, ProductsSearchResponse } from "../utilities/types";
-
-const MAX_BUTTONS = 5;
-const DEFAULT_DELAY = 400;
-const DEFAULT_LIMIT = 10;
+import { MAX_BUTTONS, DEFAULT_DELAY, DEFAULT_LIMIT } from "../config/constants";
 
 const query = ref("");
 const dataa = ref<Product[]>([]);
@@ -21,6 +25,7 @@ const limit = ref(DEFAULT_LIMIT);
 const page = ref(1);
 
 let debounceTimer: number | null;
+let controller: AbortController | null = null;
 
 const skip = computed(() => (page.value - 1) * limit.value);
 const totalPages = computed(() =>
@@ -52,20 +57,39 @@ const pageNumbers = computed(() => {
   return pages;
 });
 
-const fetData = async () => {
+/**
+ * Fetch data from the API based on the current query and pagination state.
+ * Handles loading state, errors, and updates the product data.
+ * Aborts any ongoing request if a new fetch is initiated.
+ */
+const fetchData = async () => {
+  if (controller) {
+    controller.abort();
+  }
+
+  controller = new AbortController();
+
   loading.value = true;
   error.value = null;
 
   try {
-    const params = new URLSearchParams({
-      q: query.value,
-      limit: String(limit.value),
-      skip: String(skip.value),
-    });
+    let result: Response;
 
-    const result = await fetch(
-      `https://dummyjson.com/products/search?${params.toString()}`
-    );
+    if (query.value.trim() === "") {
+      const params = new URLSearchParams({
+        limit: String(limit.value),
+        skip: String(skip.value),
+      });
+
+      result = await getProducts(params, controller);
+    } else {
+      const params = new URLSearchParams({
+        q: query.value,
+        limit: String(limit.value),
+        skip: String(skip.value),
+      });
+      result = await getProductByQuery(params, controller);
+    }
 
     if (!result.ok) throw new Error(`Request failed (${result.status})`);
 
@@ -75,7 +99,13 @@ const fetData = async () => {
     total.value = data.total ?? 0;
 
     if (page.value > totalPages.value) page.value = totalPages.value;
-  } catch (e) {
+  } catch (e: unknown) {
+    if (
+      (e instanceof DOMException || e instanceof Error) &&
+      e.name === "AbortError"
+    )
+      return;
+
     error.value = e instanceof Error ? e.message : "Unexpected error";
     dataa.value = [];
     total.value = 0;
@@ -89,41 +119,41 @@ const handleQuery = (value: string) => {
   page.value = 1;
 };
 
-function goToPage(p: number) {
+const goToPage = (p: number) => {
   const next = Math.min(Math.max(1, p), totalPages.value);
   if (next === page.value) return;
   page.value = next;
-  void fetData();
-}
+  void fetchData();
+};
 
-function nextPage() {
+const nextPage = () => {
   if (!canNext.value) return;
   page.value += 1;
-  void fetData();
-}
+  void fetchData();
+};
 
-function prevPage() {
+const prevPage = () => {
   if (!canPrev.value) return;
   page.value -= 1;
-  void fetData();
-}
+  void fetchData();
+};
 
-function debounceFetch(timer = DEFAULT_DELAY) {
+const debounceFetch = (timer = DEFAULT_DELAY) => {
   if (debounceTimer) {
     window.clearTimeout(debounceTimer);
   }
 
   debounceTimer = window.setTimeout(() => {
-    void fetData();
+    void fetchData();
   }, timer);
-}
+};
 
-watch([query], () => {
+watch(query, () => {
   debounceFetch();
 });
 
 onMounted(() => {
-  fetData();
+  fetchData();
 });
 </script>
 <template>

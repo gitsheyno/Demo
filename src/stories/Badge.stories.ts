@@ -9,6 +9,20 @@ const meta: Meta<typeof Badge> = {
     type: "discount",
     size: "sm",
   },
+  argTypes: {
+    type: {
+      control: "select",
+      options: ["discount", "limited", "out"],
+    },
+    size: {
+      control: "select",
+      options: ["sm", "lg"],
+    },
+    default: {
+      control: "text",
+      description: "Badge content (slot)",
+    },
+  },
 };
 
 export default meta;

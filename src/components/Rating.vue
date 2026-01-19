@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 interface Props {
   rating: number;
   maxStars?: number;
@@ -7,15 +9,21 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   maxStars: 5,
 });
+
+const safeRating = computed(() => {
+  if (props.rating < 0) return 0;
+  if (props.rating > props.maxStars) return props.maxStars;
+  return props.rating;
+});
 </script>
 
 <template>
   <div
     class="flex"
-    :aria-label="`Rated ${rating.toFixed(1)} out of 5 stars`"
+    :aria-label="`Rated ${safeRating.toFixed(1)} out of ${maxStars} stars`"
     role="img"
   >
-    <div v-for="i in 5" :key="i" class="relative w-4 h-4">
+    <div v-for="i in maxStars" :key="i" class="relative w-4 h-4">
       <svg
         aria-hidden="true"
         class="absolute inset-0 text-slate-300"
@@ -35,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
         :style="{
           clipPath: `inset(0 ${Math.max(
             0,
-            100 - Math.max(0, Math.min(1, rating - (i - 1))) * 100
+            100 - Math.max(0, Math.min(1, safeRating - (i - 1))) * 100
           )}% 0 0)`,
         }"
       >

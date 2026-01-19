@@ -11,6 +11,7 @@ const meta = {
     size: { control: "select", options: ["sm", "md"] },
     disabled: { control: "boolean" },
     loading: { control: "boolean" },
+    type: { control: "select", options: ["button", "submit", "reset"] },
   },
   args: {
     variant: "secondary",
@@ -23,6 +24,15 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const AddToCart: Story = {
+  args: { variant: "primary" },
+  render: (args) => ({
+    components: { Button },
+    setup: () => ({ args }),
+    template: `<Button v-bind="args">Add to Cart</Button>`,
+  }),
+};
 
 export const Primary: Story = {
   args: { variant: "primary" },
