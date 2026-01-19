@@ -1,4 +1,17 @@
 <script setup lang="ts">
+/**
+ * SearchInput
+ *
+ * A controlled input component used for product searching.
+ *
+ * - Emits updates via v-model
+ * - Includes clear button for quick reset
+ * - Provides visual focus feedback
+ *
+ * Accessibility:
+ * - Uses a proper label (sr-only)
+ * - Keyboard and screen-reader friendly
+ */
 import { ref } from "vue";
 
 const props = defineProps(["modelValue"]);

@@ -1,8 +1,21 @@
 <script setup lang="ts">
 /**
- *  ProductList.vue
- *  This component displays a list of products fetched from an API.
- *  It includes search functionality, pagination controls, and handles loading and error states.
+ * ProductList
+ *
+ * Main container component responsible for rendering the product listing page.
+ *
+ * Responsibilities:
+ * - Manages search query, pagination state, and loading/error states
+ * - Fetches product data from the API (with debouncing and request cancellation)
+ * - Coordinates UI composition using presentational components
+ *
+ * Composed of:
+ * - SearchHeader
+ * - ProductCard
+ * - PaginationControls
+ *
+ * This component is stateful and acts as the orchestration layer
+ * between API services and UI components.
  */
 
 import { computed, onMounted, ref, watch } from "vue";
@@ -57,11 +70,6 @@ const pageNumbers = computed(() => {
   return pages;
 });
 
-/**
- * Fetch data from the API based on the current query and pagination state.
- * Handles loading state, errors, and updates the product data.
- * Aborts any ongoing request if a new fetch is initiated.
- */
 const fetchData = async () => {
   if (controller) {
     controller.abort();

@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * TagChip
+ *
+ * A lightweight label component used to display product tags or categories.
+ *
+ */
+
 const props = defineProps<{
   label: string;
   prefix?: string;

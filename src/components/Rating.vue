@@ -1,4 +1,15 @@
 <script setup lang="ts">
+/**
+ * Rating
+ *
+ * Displays a star-based rating with support for partial values.
+ *
+ * - Safely clamps rating values within allowed range
+ * - Supports configurable maximum star count
+ *
+ * Accessibility:
+ * - Exposes a descriptive aria-label for screen readers
+ */
 import { computed } from "vue";
 
 interface Props {

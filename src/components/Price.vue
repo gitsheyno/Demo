@@ -1,4 +1,16 @@
 <script setup lang="ts">
+/**
+ * Price
+ *
+ * Displays product pricing with optional discount handling.
+ *
+ * - Shows discounted price alongside the original price when applicable
+ * - Falls back to a single price when no valid discount exists
+ * - Formats values using Intl.NumberFormat
+ *
+ * Accessibility:
+ * - Includes screen-reader-only text to announce discount changes
+ */
 import { computed } from "vue";
 
 const props = withDefaults(

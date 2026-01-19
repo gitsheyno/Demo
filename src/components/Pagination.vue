@@ -1,4 +1,19 @@
 <script setup lang="ts">
+/**
+ * PaginationControls
+ *
+ * Controlled pagination component responsible for page navigation.
+ *
+ * - Renders previous / next controls
+ * - Displays a limited range of page numbers
+ * - Emits navigation events without managing state internally
+ *
+ * Accessibility:
+ * - Uses semantic navigation landmarks
+ * - Buttons are keyboard accessible
+ *
+ * This component is stateless and controlled by the parent.
+ */
 import { computed } from "vue";
 import Button from "./Button.vue";
 

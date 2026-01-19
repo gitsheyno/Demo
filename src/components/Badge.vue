@@ -1,4 +1,11 @@
 <script setup lang="ts">
+/**
+ * Badge
+ *
+ * A small status indicator used to highlight product states such as
+ * discount, limited stock, or out-of-stock.
+ *
+ */
 import { computed } from "vue";
 
 type BadgeType = "discount" | "limited" | "out";

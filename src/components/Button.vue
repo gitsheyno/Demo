@@ -1,4 +1,18 @@
 <script setup lang="ts">
+/**
+ * Button
+ *
+ * Reusable button component supporting multiple variants and sizes.
+ *
+ * - Variants: primary, secondary, ghost
+ * - Supports loading and disabled states
+ * - Prevents interaction while loading or disabled
+ *
+ * Accessibility:
+ * - Uses native button semantics
+ * - Disabled state properly reflected
+ *
+ */
 import { computed } from "vue";
 
 type Variant = "primary" | "secondary" | "ghost";

@@ -1,8 +1,20 @@
 <script setup lang="ts">
 /**
+ * ProductCard
  *
+ * Composite component responsible for rendering a product summary.
  *
- * ProductCard.vue
+ * Combines multiple UI components:
+ * - Badge
+ * - Price
+ * - Rating
+ * - TagChip
+ * - Button
+ *
+ * Handles product states:
+ * - Discount (only when threshold is met)
+ * - Limited stock
+ * - Out of stock (disabled interactions)
  *
  */
 import { computed } from "vue";

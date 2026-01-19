@@ -1,3 +1,10 @@
+/**
+ * Fetches products matching a search query.
+ *
+ * - Used for server-side search
+ * - Supports request cancellation via AbortController
+ *
+ */
 import { API_BASE } from "../utilities/api";
 export const getProductByQuery = async (
   params: URLSearchParams,
